@@ -1,0 +1,91 @@
+// TikTok Handle Exchange Mockup UI
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+
+export default function HandleExchange() {
+  const [handle, setHandle] = useState("");
+  const [availability, setAvailability] = useState(null);
+
+  const checkHandle = () => {
+    const reserved = ["@anime", "@cewejakarta", "@music"];
+    if (!handle) return;
+    setAvailability(reserved.includes(handle) ? "Unavailable" : "Available");
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto mt-10 space-y-6">
+      <h1 className="text-2xl font-bold">TikTok Handle Exchange</h1>
+      <Tabs defaultValue="locker">
+        <TabsList>
+          <TabsTrigger value="locker">🔒 Reserve Handle</TabsTrigger>
+          <TabsTrigger value="marketplace">💰 Marketplace</TabsTrigger>
+          <TabsTrigger value="claim">🛡️ Claim Handle</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="locker">
+          <Card>
+            <CardContent className="space-y-4 p-4">
+              <p className="text-sm">Reserve your dream TikTok handle before someone else takes it.</p>
+              <Input
+                placeholder="Enter desired handle (e.g. @cewejakarta)"
+                value={handle}
+                onChange={(e) => setHandle(e.target.value)}
+              />
+              <Button onClick={checkHandle}>Check Availability</Button>
+              {availability && (
+                <div className="text-sm">
+                  Status: {availability === "Available" ? (
+                    <Badge variant="default" className="bg-green-500">Available</Badge>
+                  ) : (
+                    <Badge variant="destructive">Unavailable</Badge>
+                  )}
+                </div>
+              )}
+              {availability === "Available" && (
+                <Button className="bg-purple-600 hover:bg-purple-700">Reserve Now (10 TikTok Coins)</Button>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="marketplace">
+          <Card>
+            <CardContent className="space-y-4 p-4">
+              <p className="text-sm">Buy a username directly from other users.</p>
+              <ul className="space-y-2">
+                <li className="flex justify-between">
+                  <span>@cewejakarta</span>
+                  <Button size="sm" variant="outline">Buy for 500 Coins</Button>
+                </li>
+                <li className="flex justify-between">
+                  <span>@musikindonesia</span>
+                  <Button size="sm" variant="outline">Buy for 300 Coins</Button>
+                </li>
+                <li className="flex justify-between">
+                  <span>@vtuber</span>
+                  <Button size="sm" variant="outline">Buy for 900 Coins</Button>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="claim">
+          <Card>
+            <CardContent className="space-y-4 p-4">
+              <p className="text-sm">Verified on IG, X, or YouTube? Claim your handle here.</p>
+              <Input placeholder="Enter handle to claim (e.g. @cewejakarta)" />
+              <Button className="bg-blue-600 hover:bg-blue-700">Submit Claim Request</Button>
+              <p className="text-xs text-gray-500">You’ll be asked to connect other verified accounts to prove identity.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
